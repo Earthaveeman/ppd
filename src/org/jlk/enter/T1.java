@@ -28,7 +28,6 @@ public class T1 {
 
 
 		while(true){
-			TimeUnit.MILLISECONDS.sleep(500);
 
 			Result result = OpenApiClient.send(loanListUrl,
 					new PropertyObject("PageIndex", 1, ValueTypeEnum.Int32));
@@ -36,6 +35,8 @@ public class T1 {
 
 				JSONObject jsonObject = JSONObject.fromObject(result.getContext());
 				JSONArray jsonArray = jsonObject.getJSONArray("LoanInfos");
+				
+				System.out.println(jsonArray);
 
 				int size = jsonArray.size();
 				for(int i = 0; i < size; i++){
@@ -43,11 +44,13 @@ public class T1 {
 					String creditCode = loanInfo.getString("CreditCode");
 					Double rate = loanInfo.getDouble("Rate");
 					
-					if(rate > 22){
+					if(rate >= 22){
 						System.out.println(loanInfo);
 					}
 				}
 			}
+			
+			TimeUnit.MILLISECONDS.sleep(2000);
 		}
 	}
 
