@@ -28,7 +28,7 @@ public class T1 {
 
 
 		while(true){
-			TimeUnit.MILLISECONDS.sleep(400);
+			TimeUnit.MILLISECONDS.sleep(600);
 
 			Result result = OpenApiClient.send(loanListUrl,
 					new PropertyObject("PageIndex", 1, ValueTypeEnum.Int32));
