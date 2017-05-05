@@ -40,7 +40,6 @@ public class T1 {
 				int size = jsonArray.size();
 				for(int i = 0; i < size; i++){
 					JSONObject loanInfo = jsonArray.getJSONObject(i);
-					Integer listingId = loanInfo.getInt("ListingId");
 					String creditCode = loanInfo.getString("CreditCode");
 					Double rate = loanInfo.getDouble("Rate");
 					
