@@ -16,10 +16,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+
 /**
  * Created by xuzhishen on 2016/3/16.
  */
 public class OpenApiClient {
+	
+	private static Logger log = Logger.getLogger(OpenApiClient.class);
 
     /**
      * 获取授权信息URL
@@ -105,7 +109,9 @@ public class OpenApiClient {
             /******************* 公共请求参数 ************************/
             urlConnection.setRequestProperty("X-PPD-APPID", appid);
             /*******自定义*******/
-            urlConnection.setRequestProperty("X-Forwarded-For", "8.8.4.4");
+            urlConnection.setConnectTimeout(2000);
+            urlConnection.setReadTimeout(3000);
+//            urlConnection.setRequestProperty("X-Forwarded-For", "8.8.4.4");
 
             //获取UTC时间作为时间戳
             java.util.Calendar cal = java.util.Calendar.getInstance();
@@ -134,24 +140,13 @@ public class OpenApiClient {
             result.setSucess(true);
             result.setContext(strResponse);
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            result.setErrorMessage(e.getMessage());
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-            result.setErrorMessage(e.getMessage());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            result.setErrorMessage(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            result.setErrorMessage(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             result.setErrorMessage(e.getMessage());
+            log.error(e);
         } finally {
-
         }
+        
         return result;
     }
 
