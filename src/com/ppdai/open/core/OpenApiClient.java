@@ -109,8 +109,8 @@ public class OpenApiClient {
             /******************* 公共请求参数 ************************/
             urlConnection.setRequestProperty("X-PPD-APPID", appid);
             /*******自定义*******/
-            urlConnection.setConnectTimeout(2000);
-            urlConnection.setReadTimeout(3000);
+            urlConnection.setConnectTimeout(3000);
+            urlConnection.setReadTimeout(8000);
 //            urlConnection.setRequestProperty("X-Forwarded-For", "8.8.4.4");
 
             //获取UTC时间作为时间戳
