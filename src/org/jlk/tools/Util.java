@@ -23,6 +23,7 @@ public class Util {
 //	private static String refreshtokenUrl = ReadProperties.getProperties("refreshtokenUrl");
 	private static String queryBalance = ReadProperties.getProperties("queryBalance");
 	private static Double AARate = Double.parseDouble(ReadProperties.getProperties("AARate"));
+	private static Double overNormalRate = Double.parseDouble(ReadProperties.getProperties("overNormalRate"));
 	
 	public static AuthInfo getAuthInfo(String code){
 		AuthInfo authInfo = null;
@@ -132,7 +133,7 @@ public class Util {
 					int overdueMoreCount = loanInfo.getInt("OverdueMoreCount");	//逾期(15天以上)还清次数
 					String studyStyle = loanInfo.getString("StudyStyle");
 
-					if(certificateValidate==1 && overdueMoreCount==0 && (overdueLessCount/normalCount)<=0.25){
+					if(certificateValidate==1 && overdueMoreCount==0 && (overdueLessCount/normalCount)<=overNormalRate){
 						if(gender==2 && age<55 && successCount>3){
 							log.info("发现目标[魔镜等级D][标号" + listingId + "]");
 							log.info(loanInfo);
