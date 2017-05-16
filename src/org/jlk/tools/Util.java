@@ -24,6 +24,7 @@ public class Util {
 	private static String queryBalance = ReadProperties.getProperties("queryBalance");
 	private static Double AARate = Double.parseDouble(ReadProperties.getProperties("AARate"));
 	private static Double overNormalRate = Double.parseDouble(ReadProperties.getProperties("overNormalRate"));
+	private static int dMonths = Integer.parseInt(ReadProperties.getProperties("dMonths"));
 	
 	public static AuthInfo getAuthInfo(String code){
 		AuthInfo authInfo = null;
@@ -83,6 +84,7 @@ public class Util {
 			Integer listingId = loanInfo.getInt("ListingId");
 			String creditCode = loanInfo.getString("CreditCode");
 			Double rate = loanInfo.getDouble("Rate");
+//			int months = loanInfo.getInt("Months");
 			
 			if("C".equals(creditCode) && rate > 20){
 				log.info("发现目标[魔镜等级C][标号" + listingId + "]");
@@ -104,8 +106,9 @@ public class Util {
 			Integer listingId = loanInfo.getInt("ListingId");
 			String creditCode = loanInfo.getString("CreditCode");
 			Double rate = loanInfo.getDouble("Rate");
+			int months = loanInfo.getInt("Months");
 			
-			if("D".equals(creditCode) && rate >= 22){
+			if("D".equals(creditCode) && rate >= 22 && months <= dMonths){
 				allD.add(listingId);
 			}
 		}
@@ -131,15 +134,15 @@ public class Util {
 					double normalCount = loanInfo.getDouble("NormalCount");	//正常还清次数
 					double overdueLessCount = loanInfo.getDouble("OverdueLessCount");	//逾期(1-15)还清次数
 					int overdueMoreCount = loanInfo.getInt("OverdueMoreCount");	//逾期(15天以上)还清次数
-					String studyStyle = loanInfo.getString("StudyStyle");
+//					String studyStyle = loanInfo.getString("StudyStyle");
 
 					if(certificateValidate==1 && overdueMoreCount==0 && (overdueLessCount/normalCount)<=overNormalRate){
-						if(gender==2 && age<55 && successCount>3){
+						if(gender==2 && age<55 && successCount>5){
 							log.info("发现目标[魔镜等级D][标号" + listingId + "]");
 							log.info(loanInfo);
 							returnList.add(listingId);
 						}
-						if(gender==1 && age<50 && successCount>10 && studyStyle.contains("普通")){
+						if(gender==1 && age<50 && successCount>10){
 							log.info("发现目标[魔镜等级D][标号" + listingId + "]");
 							log.info(loanInfo);
 							returnList.add(listingId);
