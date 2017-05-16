@@ -17,10 +17,18 @@ import net.sf.json.JSONObject;
 
 public class Task_AA extends TimerTask{
 	private static Logger log = Logger.getLogger(Task_AA.class);
-	
+
 	private static String accessToken = ReadProperties.getProperties("accessToken");
+	
 	private static String loanListUrl = ReadProperties.getProperties("loanListUrl");
 	private static int AAAmount = Integer.parseInt((ReadProperties.getProperties("AAAmount")));
+	
+	public Task_AA(){
+		
+	}
+	public Task_AA(String accessToken){
+		Task_AA.accessToken = accessToken;
+	}
 
 	@Override
 	public void run() {

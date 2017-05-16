@@ -137,12 +137,12 @@ public class Util {
 //					String studyStyle = loanInfo.getString("StudyStyle");
 
 					if(certificateValidate==1 && overdueMoreCount==0 && (overdueLessCount/normalCount)<=overNormalRate){
-						if(gender==2 && age<55 && successCount>5){
+						if(gender==2 && age<45 && successCount>5){
 							log.info("发现目标[魔镜等级D][标号" + listingId + "]");
 							log.info(loanInfo);
 							returnList.add(listingId);
 						}
-						if(gender==1 && age<50 && successCount>10){
+						if(gender==1 && age<40 && successCount>10){
 							log.info("发现目标[魔镜等级D][标号" + listingId + "]");
 							log.info(loanInfo);
 							returnList.add(listingId);

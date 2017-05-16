@@ -17,11 +17,19 @@ import net.sf.json.JSONObject;
 
 public class Task__D extends TimerTask{
 	private static Logger log = Logger.getLogger(Task__D.class);
-	
+
 	private static String accessToken = ReadProperties.getProperties("accessToken");
+	
 	private static String loanListUrl = ReadProperties.getProperties("loanListUrl");
 	private static int CDAmount = Integer.parseInt((ReadProperties.getProperties("CDAmount")));
 
+	public Task__D(){
+		
+	}
+	public Task__D(String accessToken){
+		Task__D.accessToken = accessToken;
+	}
+	
 	@Override
 	public void run() {
 		try {
