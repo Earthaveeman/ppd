@@ -1,6 +1,5 @@
 package org.jlk.task;
 
-import java.util.List;
 import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
@@ -33,20 +32,18 @@ public class Task__D extends TimerTask{
 	@Override
 	public void run() {
 		try {
+			long begin = System.currentTimeMillis();
 			Result result = OpenApiClient.send(loanListUrl,
 					new PropertyObject("PageIndex", 1, ValueTypeEnum.Int32));
+			long end = System.currentTimeMillis();
 			if (result.isSucess()) {
 
 				JSONObject jsonObject = JSONObject.fromObject(result.getContext());
 				JSONArray jsonArray = jsonObject.getJSONArray("LoanInfos");
-				
-				log.info("获取可投标列表 ... ...  数量 " + jsonArray.size());
 
-				List<Integer> highQualityDList = Util.getHighQualityDList(jsonArray);
+				log.info("Monitoring loan list ... Total " + jsonArray.size() + ", cost " + (end-begin) + "ms.");
 				
-				if (highQualityDList.size() > 0) {
-					Util.bidding(accessToken, highQualityDList, CDAmount);
-				}
+				Util.findHighQualityDListAndBid(jsonArray, accessToken, CDAmount);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

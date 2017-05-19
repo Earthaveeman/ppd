@@ -33,14 +33,16 @@ public class Task__C extends TimerTask{
 	@Override
 	public void run() {
 		try {
+			long begin = System.currentTimeMillis();
 			Result result = OpenApiClient.send(loanListUrl,
 					new PropertyObject("PageIndex", 1, ValueTypeEnum.Int32));
+			long end = System.currentTimeMillis();
 			if (result.isSucess()) {
 
 				JSONObject jsonObject = JSONObject.fromObject(result.getContext());
 				JSONArray jsonArray = jsonObject.getJSONArray("LoanInfos");
-				
-				log.info("获取可投标列表 ... ...  数量 " + jsonArray.size());
+
+				log.info("Monitoring loan list ... Total " + jsonArray.size() + ", cost " + (end-begin) + "ms.");
 
 				List<Integer> highQualityC22List = Util.getHighQualityC22List(jsonArray);
 				

@@ -96,9 +96,7 @@ public class Util {
 		return returnList;
 	}
 	
-	public static List<Integer> getHighQualityDList(JSONArray jsonArray) throws Exception{
-		List<Integer> returnList = new ArrayList<Integer>();
-
+	public static void findHighQualityDListAndBid(JSONArray jsonArray, String accessToken, int amount) throws Exception{
 		List<Integer> allD = new ArrayList<Integer>();
 		int size = jsonArray.size();
 		for(int i = 0; i < size; i++){
@@ -140,19 +138,23 @@ public class Util {
 						if(gender==2 && age<45 && successCount>5){
 							log.info("发现目标[魔镜等级D][标号" + listingId + "]");
 							log.info(loanInfo);
-							returnList.add(listingId);
+							
+							List<Integer> listingIds = new ArrayList<Integer>();
+							listingIds.add(listingId);
+							bidding(accessToken, listingIds, amount);
 						}
 						if(gender==1 && age<40 && successCount>10){
 							log.info("发现目标[魔镜等级D][标号" + listingId + "]");
 							log.info(loanInfo);
-							returnList.add(listingId);
+
+							List<Integer> listingIds = new ArrayList<Integer>();
+							listingIds.add(listingId);
+							bidding(accessToken, listingIds, amount);
 						}
 					}
 				}
 			}
 		}
-		
-		return returnList;
 	}
 	
 	public static void bidding(String accessToken,List<Integer> listingIds, int amount) throws Exception{
