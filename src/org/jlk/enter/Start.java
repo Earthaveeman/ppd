@@ -27,8 +27,7 @@ public class Start {
 		String clientPrivateKey = ReadProperties.getProperties("clientPrivateKey");
 		String serverPublicKey = ReadProperties.getProperties("serverPublicKey");
 
-//		String openId = ReadProperties.getProperties("openId");
-//		String refreshToken = ReadProperties.getProperties("refreshToken");
+		String accessToken = ReadProperties.getProperties("accessToken");
 		
 		log.info("客户端初始化中 ... ...");
 		OpenApiClient.Init(appid, RsaCryptoHelper.PKCSType.PKCS8, serverPublicKey, clientPrivateKey);
@@ -41,20 +40,17 @@ public class Start {
 			return;
 		}
 		
-//		String accessToken = Util.refreshtoken(openId, refreshToken).getAccessToken();
-//		log.error("[accessToken]:" + accessToken);
-		
 		if(isAAEnable){
 			Timer timerAA = new Timer();
-			timerAA.schedule(new Task_AA(), 1000, refreshTime);
+			timerAA.schedule(new Task_AA(accessToken), 1000, refreshTime);
 		}
 		if(isCEnable){
 			Timer timerC = new Timer();
-			timerC.schedule(new Task__C(), 4000, refreshTime);
+			timerC.schedule(new Task__C(accessToken), 4000, refreshTime);
 		}
 		if(isDEnable){
 			Timer timerD = new Timer();
-			timerD.schedule(new Task__D(), 7000, refreshTime);
+			timerD.schedule(new Task__D(accessToken), 7000, refreshTime);
 		}
 		
 	}

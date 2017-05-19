@@ -160,15 +160,18 @@ public class Util {
 			log.info("尝试投标[标号" + listingId +  "]");
 			Result biddingResult = OpenApiClient.send(biddingUrl,accessToken,
 					new PropertyObject("ListingId",listingId,ValueTypeEnum.Int32),
-					new PropertyObject("Amount",amount,ValueTypeEnum.Double)
+					new PropertyObject("Amount",amount,ValueTypeEnum.Double),
+					new PropertyObject("UseCoupon","true",ValueTypeEnum.String)
 					);
 			if(biddingResult.isSucess()){
 				String message = biddingResult.getContext();
 				int resultCode = JSONObject.fromObject(message).getInt("Result");
 				if(resultCode == 0){
 					log.error("■■■■■■■■■■■■■■■ 投标成功[标号" + listingId +  "]■■■■■■■■■■■■■■■■■■■");
+					log.error("投标详情[" + biddingResult.getContext() + "]");
+				} else {
+					log.info("投标详情[" + biddingResult.getContext() + "]");
 				}
-				log.info("投标详情[" + biddingResult.getContext() + "]");
 			}
 		}
 	}
