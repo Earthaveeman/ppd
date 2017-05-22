@@ -35,8 +35,7 @@ public class T1 {
 		String dateStr = sdf.format(startDateTime);
 		
 		Result result = OpenApiClient.send(loanListUrl,
-				new PropertyObject("PageIndex", 1, ValueTypeEnum.Int32),
-				new PropertyObject("StartDateTime", dateStr, ValueTypeEnum.DateTime));
+				new PropertyObject("PageIndex", 4, ValueTypeEnum.Int32));
 		JSONObject jsonObject = JSONObject.fromObject(result.getContext());
 		JSONArray jsonArray = jsonObject.getJSONArray("LoanInfos");
 		System.out.println(jsonArray.size());

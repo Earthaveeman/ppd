@@ -50,7 +50,7 @@ public class Task__C extends TimerTask{
 				JSONObject jsonObject = JSONObject.fromObject(result.getContext());
 				JSONArray jsonArray = jsonObject.getJSONArray("LoanInfos");
 
-				log.info("Monitoring loan list ... Total " + jsonArray.size() + ", cost " + (end-begin) + "ms.");
+				log.info("Monitoring Loan List ... Gets " + jsonArray.size() + ", takes " + (end-begin) + "ms.");
 
 				List<Integer> highQualityC22List = Util.getHighQualityC22List(jsonArray);
 				
