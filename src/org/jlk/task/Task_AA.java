@@ -1,5 +1,7 @@
 package org.jlk.task;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -33,9 +35,15 @@ public class Task_AA extends TimerTask{
 	@Override
 	public void run() {
 		try {
+			Date now = new Date();
+			Date startDateTime = new Date(now.getTime() - (1*60*1000));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String dateStr = sdf.format(startDateTime);
+			
 			long begin = System.currentTimeMillis();
 			Result result = OpenApiClient.send(loanListUrl,
-					new PropertyObject("PageIndex", 1, ValueTypeEnum.Int32));
+					new PropertyObject("PageIndex", 1, ValueTypeEnum.Int32),
+					new PropertyObject("StartDateTime", dateStr, ValueTypeEnum.DateTime));
 			long end = System.currentTimeMillis();
 			if (result.isSucess()) {
 

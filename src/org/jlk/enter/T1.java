@@ -1,5 +1,8 @@
 package org.jlk.enter;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -26,29 +29,17 @@ public class T1 {
 		String accessToken = ReadProperties.getProperties("accessToken");
 		OpenApiClient.Init(appid, RsaCryptoHelper.PKCSType.PKCS8, serverPublicKey, clientPrivateKey);
 
-
-		while(true){
-			TimeUnit.MILLISECONDS.sleep(600);
-
-			Result result = OpenApiClient.send(loanListUrl,
-					new PropertyObject("PageIndex", 1, ValueTypeEnum.Int32));
-			if (result.isSucess()) {
-
-				JSONObject jsonObject = JSONObject.fromObject(result.getContext());
-				JSONArray jsonArray = jsonObject.getJSONArray("LoanInfos");
-
-				int size = jsonArray.size();
-				for(int i = 0; i < size; i++){
-					JSONObject loanInfo = jsonArray.getJSONObject(i);
-					String creditCode = loanInfo.getString("CreditCode");
-					Double rate = loanInfo.getDouble("Rate");
-					
-					if(rate > 22){
-						System.out.println(loanInfo);
-					}
-				}
-			}
-		}
+		Date now = new Date();
+		Date startDateTime = new Date(now.getTime() - (1*60*1000));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String dateStr = sdf.format(startDateTime);
+		
+		Result result = OpenApiClient.send(loanListUrl,
+				new PropertyObject("PageIndex", 1, ValueTypeEnum.Int32),
+				new PropertyObject("StartDateTime", dateStr, ValueTypeEnum.DateTime));
+		JSONObject jsonObject = JSONObject.fromObject(result.getContext());
+		JSONArray jsonArray = jsonObject.getJSONArray("LoanInfos");
+		System.out.println(jsonArray.size());
 	}
 
 }
