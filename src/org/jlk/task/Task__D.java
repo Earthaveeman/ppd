@@ -26,7 +26,7 @@ public class Task__D extends TimerTask{
 	public void run() {
 		try {
 			Date now = new Date();
-			Date startDateTime = new Date(now.getTime() - (1*60*1000));
+			Date startDateTime = new Date(now.getTime() - (30*1000));
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String dateStr = sdf.format(startDateTime);
 			
@@ -42,7 +42,7 @@ public class Task__D extends TimerTask{
 
 				log.info("Monitoring Loan List ... Gets " + jsonArray.size() + ", takes " + (end-begin) + "ms.");
 				
-				Util.findHighQualityDListAndBid(jsonArray, CDAmount);
+				Util.findHighQuality22RateListAndBid(jsonArray, CDAmount);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

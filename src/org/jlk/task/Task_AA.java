@@ -27,7 +27,7 @@ public class Task_AA extends TimerTask{
 	public void run() {
 		try {
 			Date now = new Date();
-			Date startDateTime = new Date(now.getTime() - (1*60*1000));
+			Date startDateTime = new Date(now.getTime() - (30*1000));
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String dateStr = sdf.format(startDateTime);
 			

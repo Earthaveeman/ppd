@@ -96,35 +96,36 @@ public class Util {
 		return returnList;
 	}
 	
-	public static void findHighQualityDListAndBid(JSONArray jsonArray, int amount) throws Exception{
-		List<Integer> allD = new ArrayList<Integer>();
+	public static void findHighQuality22RateListAndBid(JSONArray jsonArray, int amount) throws Exception{
+		List<Integer> firstFilteredLoans = new ArrayList<Integer>();
 		int size = jsonArray.size();
 		for(int i = 0; i < size; i++){
 			JSONObject loanInfo = jsonArray.getJSONObject(i);
 			Integer listingId = loanInfo.getInt("ListingId");
-			String creditCode = loanInfo.getString("CreditCode");
+//			String creditCode = loanInfo.getString("CreditCode");
 			Double rate = loanInfo.getDouble("Rate");
 			int months = loanInfo.getInt("Months");
 			
-			if("D".equals(creditCode) && rate >= 22 && months <= dMonths){
-				allD.add(listingId);
+			if(rate >= 22 && months <= dMonths){
+				firstFilteredLoans.add(listingId);
 			}
 		}
 
-		int dSize = allD.size();
+		int loanSize = firstFilteredLoans.size();
 		
-		//每10条D查一次详情
-		for(int i=0; i<=dSize; i+=10){
-			int toIndex = (i+10)>dSize ? dSize : (i+10);
-			List<Integer> tenD = allD.subList(i, toIndex);
+		//每10条查一次详情
+		for(int i=0; i<=loanSize; i+=10){
+			int toIndex = (i+10)>loanSize ? loanSize : (i+10);
+			List<Integer> tenLoans = firstFilteredLoans.subList(i, toIndex);
 			
 			Result detailResult = OpenApiClient.send(batchListingInfosUrl,
-					new PropertyObject("ListingIds", tenD, ValueTypeEnum.Other));
+					new PropertyObject("ListingIds", tenLoans, ValueTypeEnum.Other));
 			if(detailResult.isSucess()){
 				JSONArray loanInfos = JSONObject.fromObject(detailResult.getContext()).getJSONArray("LoanInfos");
 				for(int j=0; j<loanInfos.size(); j++){
 					JSONObject loanInfo = loanInfos.getJSONObject(j);
 					int listingId = loanInfo.getInt("ListingId");
+					String creditCode = loanInfo.getString("CreditCode");
 					int gender = loanInfo.getInt("Gender");	//性别	1 男 2 女 0 未知
 					int age = loanInfo.getInt("Age");
 					int certificateValidate = loanInfo.getInt("CertificateValidate");	//学历认证
@@ -136,7 +137,7 @@ public class Util {
 
 					if(certificateValidate==1 && overdueMoreCount==0 && (overdueLessCount/normalCount)<=overNormalRate){
 						if(gender==2 && age<45 && successCount>5){
-							log.info("发现目标[魔镜等级D][标号" + listingId + "]");
+							log.info("发现目标[魔镜等级" + creditCode + "][标号" + listingId + "]");
 							log.info(loanInfo);
 							
 							List<Integer> listingIds = new ArrayList<Integer>();
@@ -144,7 +145,7 @@ public class Util {
 							bidding(listingIds, amount);
 						}
 						if(gender==1 && age<40 && successCount>10){
-							log.info("发现目标[魔镜等级D][标号" + listingId + "]");
+							log.info("发现目标[魔镜等级" + creditCode + "][标号" + listingId + "]");
 							log.info(loanInfo);
 
 							List<Integer> listingIds = new ArrayList<Integer>();
