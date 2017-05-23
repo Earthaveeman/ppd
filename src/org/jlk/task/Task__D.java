@@ -18,19 +18,10 @@ import net.sf.json.JSONObject;
 
 public class Task__D extends TimerTask{
 	private static Logger log = Logger.getLogger(Task__D.class);
-
-	private String accessToken;
 	
 	private static String loanListUrl = ReadProperties.getProperties("loanListUrl");
 	private static int CDAmount = Integer.parseInt((ReadProperties.getProperties("CDAmount")));
 
-	public Task__D(){
-		
-	}
-	public Task__D(String accessToken){
-		this.accessToken = accessToken;
-	}
-	
 	@Override
 	public void run() {
 		try {
@@ -51,7 +42,7 @@ public class Task__D extends TimerTask{
 
 				log.info("Monitoring Loan List ... Gets " + jsonArray.size() + ", takes " + (end-begin) + "ms.");
 				
-				Util.findHighQualityDListAndBid(jsonArray, accessToken, CDAmount);
+				Util.findHighQualityDListAndBid(jsonArray, CDAmount);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

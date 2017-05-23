@@ -20,18 +20,9 @@ import net.sf.json.JSONObject;
 public class Task_AA extends TimerTask{
 	private static Logger log = Logger.getLogger(Task_AA.class);
 
-	private String accessToken;
-	
 	private static String loanListUrl = ReadProperties.getProperties("loanListUrl");
 	private static int AAAmount = Integer.parseInt((ReadProperties.getProperties("AAAmount")));
 	
-	public Task_AA(){
-		
-	}
-	public Task_AA(String accessToken){
-		this.accessToken = accessToken;
-	}
-
 	@Override
 	public void run() {
 		try {
@@ -55,7 +46,7 @@ public class Task_AA extends TimerTask{
 				List<Integer> highQualityAAList = Util.getHighQualityAAList(jsonArray);
 				
 				if (highQualityAAList.size() > 0) {
-					Util.bidding(accessToken, highQualityAAList, AAAmount);
+					Util.bidding(highQualityAAList, AAAmount);
 				}
 			}
 		} catch (Exception e) {

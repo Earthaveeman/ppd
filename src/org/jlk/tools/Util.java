@@ -96,7 +96,7 @@ public class Util {
 		return returnList;
 	}
 	
-	public static void findHighQualityDListAndBid(JSONArray jsonArray, String accessToken, int amount) throws Exception{
+	public static void findHighQualityDListAndBid(JSONArray jsonArray, int amount) throws Exception{
 		List<Integer> allD = new ArrayList<Integer>();
 		int size = jsonArray.size();
 		for(int i = 0; i < size; i++){
@@ -141,7 +141,7 @@ public class Util {
 							
 							List<Integer> listingIds = new ArrayList<Integer>();
 							listingIds.add(listingId);
-							bidding(accessToken, listingIds, amount);
+							bidding(listingIds, amount);
 						}
 						if(gender==1 && age<40 && successCount>10){
 							log.info("发现目标[魔镜等级D][标号" + listingId + "]");
@@ -149,7 +149,7 @@ public class Util {
 
 							List<Integer> listingIds = new ArrayList<Integer>();
 							listingIds.add(listingId);
-							bidding(accessToken, listingIds, amount);
+							bidding(listingIds, amount);
 						}
 					}
 				}
@@ -157,7 +157,10 @@ public class Util {
 		}
 	}
 	
-	public static void bidding(String accessToken,List<Integer> listingIds, int amount) throws Exception{
+	public static void bidding(List<Integer> listingIds, int amount) throws Exception{
+		AuthInfoSingleton authInfo = AuthInfoSingleton.getInstance();
+		String accessToken = authInfo.getAccessToken();
+		
 		for(int listingId : listingIds){
 			log.info("尝试投标[标号" + listingId +  "]");
 			Result biddingResult = OpenApiClient.send(biddingUrl,accessToken,
