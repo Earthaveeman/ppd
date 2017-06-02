@@ -106,7 +106,7 @@ public class Util {
 			Double rate = loanInfo.getDouble("Rate");
 			int months = loanInfo.getInt("Months");
 			
-			if(rate >= 22 && months <= dMonths){
+			if(rate >= 20 && months <= dMonths){
 				firstFilteredLoans.add(listingId);
 			}
 		}
