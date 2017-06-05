@@ -20,9 +20,9 @@ public class Util {
 
 	private static String batchListingInfosUrl = ReadProperties.getProperties("batchListingInfosUrl");
 	private static String biddingUrl = ReadProperties.getProperties("Bidding");
-//	private static String refreshtokenUrl = ReadProperties.getProperties("refreshtokenUrl");
 	private static String queryBalance = ReadProperties.getProperties("queryBalance");
 	private static Double AARate = Double.parseDouble(ReadProperties.getProperties("AARate"));
+	private static Double CDRate = Double.parseDouble(ReadProperties.getProperties("CDRate"));
 	private static Double overNormalRate = Double.parseDouble(ReadProperties.getProperties("overNormalRate"));
 	private static int dMonths = Integer.parseInt(ReadProperties.getProperties("dMonths"));
 	
@@ -75,38 +75,16 @@ public class Util {
 		return returnList;
 	}
 	
-	public static List<Integer> getHighQualityC22List(JSONArray jsonArray){
-		List<Integer> returnList = new ArrayList<Integer>();
-		
-		int size = jsonArray.size();
-		for(int i = 0; i < size; i++){
-			JSONObject loanInfo = jsonArray.getJSONObject(i);
-			Integer listingId = loanInfo.getInt("ListingId");
-			String creditCode = loanInfo.getString("CreditCode");
-			Double rate = loanInfo.getDouble("Rate");
-//			int months = loanInfo.getInt("Months");
-			
-			if("C".equals(creditCode) && rate > 20){
-				log.info("发现目标[魔镜等级C][标号" + listingId + "]");
-				log.info(loanInfo);
-				returnList.add(listingId);
-			}
-		}
-		
-		return returnList;
-	}
-	
-	public static void findHighQuality22RateListAndBid(JSONArray jsonArray, int amount) throws Exception{
+	public static void findHighQualityCDListAndBid(JSONArray jsonArray, int amount) throws Exception{
 		List<Integer> firstFilteredLoans = new ArrayList<Integer>();
 		int size = jsonArray.size();
 		for(int i = 0; i < size; i++){
 			JSONObject loanInfo = jsonArray.getJSONObject(i);
 			Integer listingId = loanInfo.getInt("ListingId");
-//			String creditCode = loanInfo.getString("CreditCode");
 			Double rate = loanInfo.getDouble("Rate");
 			int months = loanInfo.getInt("Months");
 			
-			if(rate >= 20 && months <= dMonths){
+			if(rate >= CDRate && months <= dMonths){
 				firstFilteredLoans.add(listingId);
 			}
 		}
@@ -126,7 +104,7 @@ public class Util {
 					JSONObject loanInfo = loanInfos.getJSONObject(j);
 					int listingId = loanInfo.getInt("ListingId");
 					String creditCode = loanInfo.getString("CreditCode");
-					int gender = loanInfo.getInt("Gender");	//性别	1 男 2 女 0 未知
+//					int gender = loanInfo.getInt("Gender");	//性别	1 男 2 女 0 未知
 					int age = loanInfo.getInt("Age");
 					int certificateValidate = loanInfo.getInt("CertificateValidate");	//学历认证
 					int successCount = loanInfo.getInt("SuccessCount");	//成功次数
@@ -136,18 +114,10 @@ public class Util {
 //					String studyStyle = loanInfo.getString("StudyStyle");
 
 					if(certificateValidate==1 && overdueMoreCount==0 && (overdueLessCount/normalCount)<=overNormalRate){
-						if(gender==2 && age<45 && successCount>5){
+						if(age<40 && successCount>10){
 							log.info("发现目标[魔镜等级" + creditCode + "][标号" + listingId + "]");
 							log.info(loanInfo);
 							
-							List<Integer> listingIds = new ArrayList<Integer>();
-							listingIds.add(listingId);
-							bidding(listingIds, amount);
-						}
-						if(gender==1 && age<40 && successCount>10){
-							log.info("发现目标[魔镜等级" + creditCode + "][标号" + listingId + "]");
-							log.info(loanInfo);
-
 							List<Integer> listingIds = new ArrayList<Integer>();
 							listingIds.add(listingId);
 							bidding(listingIds, amount);

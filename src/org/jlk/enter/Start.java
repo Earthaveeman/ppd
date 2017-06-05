@@ -4,9 +4,9 @@ import java.util.Timer;
 
 import org.apache.log4j.Logger;
 import org.jlk.task.AccessTokenRefreshTask;
+import org.jlk.task.ScanWholeLoanTask;
 import org.jlk.task.Task_AA;
-import org.jlk.task.Task__C;
-import org.jlk.task.Task__D;
+import org.jlk.task.Task_CD;
 import org.jlk.tools.ReadProperties;
 import org.jlk.tools.Util;
 
@@ -21,8 +21,7 @@ public class Start {
 	public static void main(String[] args) throws Exception {
 		int refreshTime = Integer.parseInt(ReadProperties.getProperties("refreshTime"));
 		boolean isAAEnable = Boolean.parseBoolean((ReadProperties.getProperties("isAAEnable")));
-		boolean isCEnable = Boolean.parseBoolean((ReadProperties.getProperties("isCEnable")));
-		boolean isDEnable = Boolean.parseBoolean((ReadProperties.getProperties("isDEnable")));
+		boolean isCDEnable = Boolean.parseBoolean((ReadProperties.getProperties("isCDEnable")));
 
 		String appid = ReadProperties.getProperties("appid");
 		String clientPrivateKey = ReadProperties.getProperties("clientPrivateKey");
@@ -46,15 +45,13 @@ public class Start {
 			Timer timerAA = new Timer();
 			timerAA.schedule(new Task_AA(), 1000, refreshTime);
 		}
-		if(isCEnable){
-			Timer timerC = new Timer();
-			timerC.schedule(new Task__C(), 4000, refreshTime);
-		}
-		if(isDEnable){
-			Timer timerD = new Timer();
-			timerD.schedule(new Task__D(), 7000, refreshTime);
+		if(isCDEnable){
+			Timer timerCD = new Timer();
+			timerCD.schedule(new Task_CD(), 4000, refreshTime);
 		}
 		
+		Timer scanWholeLoanTimer = new Timer();
+		scanWholeLoanTimer.schedule(new ScanWholeLoanTask(), 60*1000, 10*60*1000);
 	}
 
 }

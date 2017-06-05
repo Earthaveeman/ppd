@@ -2,7 +2,6 @@ package org.jlk.task;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
@@ -17,9 +16,9 @@ import com.ppdai.open.core.ValueTypeEnum;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class Task__C extends TimerTask{
-	private static Logger log = Logger.getLogger(Task__C.class);
-
+public class Task_CD extends TimerTask{
+	private static Logger log = Logger.getLogger(Task_CD.class);
+	
 	private static String loanListUrl = ReadProperties.getProperties("loanListUrl");
 	private static int CDAmount = Integer.parseInt((ReadProperties.getProperties("CDAmount")));
 
@@ -42,16 +41,13 @@ public class Task__C extends TimerTask{
 				JSONArray jsonArray = jsonObject.getJSONArray("LoanInfos");
 
 				log.info("Monitoring Loan List ... Gets " + jsonArray.size() + ", takes " + (end-begin) + "ms.");
-
-				List<Integer> highQualityC22List = Util.getHighQualityC22List(jsonArray);
 				
-				if (highQualityC22List.size() > 0) {
-					Util.bidding(highQualityC22List, CDAmount);
-				}
+				Util.findHighQualityCDListAndBid(jsonArray, CDAmount);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e);
 		}
 	}
+
 }
