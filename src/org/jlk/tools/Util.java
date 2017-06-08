@@ -113,8 +113,8 @@ public class Util {
 					int overdueMoreCount = loanInfo.getInt("OverdueMoreCount");	//逾期(15天以上)还清次数
 //					String studyStyle = loanInfo.getString("StudyStyle");
 
-					if(certificateValidate==1 && overdueMoreCount==0 && (overdueLessCount/normalCount)<=overNormalRate){
-						if(age<40 && successCount>10){
+					if(certificateValidate==1 && overdueMoreCount==0 && successCount>10 && normalCount>20){
+						if((overdueLessCount/normalCount)<=overNormalRate && age<46){
 							log.info("发现目标[魔镜等级" + creditCode + "][标号" + listingId + "]");
 							log.info(loanInfo);
 							
