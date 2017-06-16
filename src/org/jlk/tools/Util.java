@@ -25,6 +25,7 @@ public class Util {
 	private static Double CDRate = Double.parseDouble(ReadProperties.getProperties("CDRate"));
 	private static Double overNormalRate = Double.parseDouble(ReadProperties.getProperties("overNormalRate"));
 	private static int dMonths = Integer.parseInt(ReadProperties.getProperties("dMonths"));
+	private static String useCoupon = ReadProperties.getProperties("useCoupon");
 	
 	public static AuthInfo getAuthInfo(String code){
 		AuthInfo authInfo = null;
@@ -137,7 +138,7 @@ public class Util {
 			Result biddingResult = OpenApiClient.send(biddingUrl,accessToken,
 					new PropertyObject("ListingId",listingId,ValueTypeEnum.Int32),
 					new PropertyObject("Amount",amount,ValueTypeEnum.Double),
-					new PropertyObject("UseCoupon","true",ValueTypeEnum.String)
+					new PropertyObject("UseCoupon",useCoupon,ValueTypeEnum.String)
 					);
 			if(biddingResult.isSucess()){
 				String message = biddingResult.getContext();
