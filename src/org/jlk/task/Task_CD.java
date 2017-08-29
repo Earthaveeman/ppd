@@ -43,6 +43,8 @@ public class Task_CD extends TimerTask{
 				log.info("Monitoring Loan List ... Gets " + jsonArray.size() + ", takes " + (end-begin) + "ms.");
 				
 				Util.findHighQualityCDListAndBid(jsonArray, CDAmount);
+			} else {
+				log.error("Monitoring error : " + result.getErrorMessage());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

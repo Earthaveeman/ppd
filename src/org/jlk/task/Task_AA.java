@@ -48,6 +48,8 @@ public class Task_AA extends TimerTask{
 				if (highQualityAAList.size() > 0) {
 					Util.bidding(highQualityAAList, AAAmount);
 				}
+			} else {
+				log.error("Monitoring error : " + result.getErrorMessage());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
