@@ -14,11 +14,15 @@ public class AccessTokenRefreshTask extends TimerTask{
 	public void run() {
 		log.info("Refreshing AccessToken ...");
 		
-		AuthInfoSingleton authInfo = AuthInfoSingleton.getInstance();
-		String accessToken = Util.refreshtoken(authInfo.getOpenID(), authInfo.getRefreshToken()).getAccessToken();
-		authInfo.setAccessToken(accessToken);
-		
-		log.info("New AccessToken : [" + accessToken + "]");
+		try {
+			AuthInfoSingleton authInfo = AuthInfoSingleton.getInstance();
+			String accessToken = Util.refreshtoken(authInfo.getOpenID(), authInfo.getRefreshToken()).getAccessToken();
+			authInfo.setAccessToken(accessToken);
+			
+			log.info("New AccessToken : [" + accessToken + "]");
+		} catch (Exception e) {
+			log.error(e);
+		}
 	}
 
 }
